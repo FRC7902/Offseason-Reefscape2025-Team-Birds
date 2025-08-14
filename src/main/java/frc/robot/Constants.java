@@ -4,6 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -19,29 +26,10 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final double DEADBAND = 0.15;
   }
 
   public static class SwerveConstants {
-
-  }
-
-  public static class FunnelIndexerConstants {
-
-  }
-
-  public static class AlgaeCoralIndexerConstants {
-
-  }
-
-  public static class ElevatorArmConstants {
-
-  }
-
-  public static class VisionConstants {
-
-  }
-
-  public static class PathPlannerConstants {
-
+    public static final double MAX_SPEED = Units.feetToMeters(15);
   }
 }
