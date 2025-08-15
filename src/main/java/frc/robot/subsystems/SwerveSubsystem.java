@@ -71,7 +71,6 @@ public class SwerveSubsystem extends SubsystemBase {
         // Correct for skew that gets worse as angular velocity increases. Start with a
         // coefficient of 0.08.
         swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
-        //
 
         swerveDrive.setChassisDiscretization(false, true, 0.03);
         swerveDrive.swerveController.addSlewRateLimiters(null, null, null);
