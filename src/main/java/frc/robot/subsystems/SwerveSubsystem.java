@@ -7,87 +7,51 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Meter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.units.measure.MutAngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
-import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.Robot;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
-import swervelib.SwerveModule;
-import swervelib.imu.SwerveIMU;
 import swervelib.math.SwerveMath;
-import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-
-import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import frc.robot.RobotContainer;
-/*
-YAGSL framework
-MK4i modules
-Kraken X60 steering and drive motors
-CANcoders for azimuth feedback
-Redux Canandgyro as IMU
-*/
 
 public class SwerveSubsystem extends SubsystemBase {
 
     /* Swerve drive object */
     private final SwerveDrive swerveDrive;
-    /* Driver controller object */
-    private CommandXboxController m_driverController;
 
     /** Creates a new SwerveSubsystem. */
-    public SwerveSubsystem(CommandXboxController m_driverController, File directory) {
+    public SwerveSubsystem(File directory) {
 
-        this.m_driverController = m_driverController;
-        
         // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary
         // objects being created.
         // High Telemetry only feeds readable data related to swerve drive
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
         try {
-            swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveConstants.MAX_SPEED, 
-                new Pose2d(new Translation2d(Meter.of(1), 
-                Meter.of(4)), Rotation2d.fromDegrees(0)));
-            // Alternative method if you don't want to supply the conversion factor via JSON files.
-            // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed,
-            // angleConversionFactor, driveConversionFactor);
+            swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveConstants.MAX_SPEED,
+                    new Pose2d(new Translation2d(Meter.of(1),
+                            Meter.of(4)), Rotation2d.fromDegrees(0)));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        
         if (Robot.isSimulation()) {
             // Set these values to false so that simulation works
             swerveDrive.setHeadingCorrection(false);
@@ -95,18 +59,19 @@ public class SwerveSubsystem extends SubsystemBase {
         } else {
             swerveDrive.setCosineCompensator(true);
             // !SwerveDriveTelemetry.isSimulation);
-            // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
-            swerveDrive.setHeadingCorrection(false); 
+            // Disables cosine compensation for simulations since it causes discrepancies
+            // not seen in real life.
+            swerveDrive.setHeadingCorrection(false);
             // Heading correction should only be used while
             // controlling the robot via angle.
 
         }
 
         swerveDrive.setAngularVelocityCompensation(true, false, 0.08);
-        // Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
-        swerveDrive.setModuleEncoderAutoSynchronize(false, 1); 
-        // Enable if you want to resynchronize your absolute encoders and motor encoders 
-        // periodically when they are not moving.
+        // Correct for skew that gets worse as angular velocity increases. Start with a
+        // coefficient of 0.08.
+        swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
+        //
 
         swerveDrive.setChassisDiscretization(false, true, 0.03);
         swerveDrive.swerveController.addSlewRateLimiters(null, null, null);
@@ -125,7 +90,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public void simulationPeriodic() {
     }
 
-
     /**
      * Command to characterize the robot drive motors using SysId
      *
@@ -133,7 +97,7 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public Command sysIdDriveMotorCommand() {
         return SwerveDriveTest.generateSysIdCommand(SwerveDriveTest.setDriveSysIdRoutine(
-            new Config(), this, swerveDrive, 12, true), 3.0, 5.0, 3.0);
+                new Config(), this, swerveDrive, 12, true), 3.0, 5.0, 3.0);
     }
 
     /**
@@ -142,8 +106,9 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return SysId Angle Command
      */
     public Command sysIdAngleMotorCommand() {
-        return SwerveDriveTest.generateSysIdCommand(SwerveDriveTest.setAngleSysIdRoutine(new Config(), this, swerveDrive), 
-        3.0, 5.0, 3.0);
+        return SwerveDriveTest.generateSysIdCommand(
+                SwerveDriveTest.setAngleSysIdRoutine(new Config(), this, swerveDrive),
+                3.0, 5.0, 3.0);
     }
 
     /**
@@ -189,11 +154,11 @@ public class SwerveSubsystem extends SubsystemBase {
         return run(() -> {
             // Make the robot move
             swerveDrive.drive(SwerveMath.scaleTranslation(new Translation2d(
-                translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
-                translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()),
-                0.8),
-                Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumChassisAngularVelocity(),
-                true, false);
+                    translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
+                    translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()),
+                    0.8),
+                    Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumChassisAngularVelocity(),
+                    true, false);
         });
     }
 
@@ -211,7 +176,8 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY,
             DoubleSupplier headingX, DoubleSupplier headingY) {
-        // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
+        // swerveDrive.setHeadingCorrection(true); // Normally you would want heading
+        // correction for this kind of control.
         return run(() -> {
 
             Translation2d scaledInputs = SwerveMath.scaleTranslation(
@@ -459,7 +425,6 @@ public class SwerveSubsystem extends SubsystemBase {
         return swerveDrive.swerveController;
     }
 
-
     /**
      * Gets the current pitch angle of the robot, as reported by the imu.
      *
@@ -468,7 +433,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public Rotation2d getPitch() {
         return swerveDrive.getPitch();
     }
-
 
     /**
      * Gets the swerve drive object.
@@ -484,20 +448,21 @@ public class SwerveSubsystem extends SubsystemBase {
 
         return run(() -> {
             swerveDrive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0,
-                controller.headingCalculate(swerveDrive.getOdometryHeading().unaryMinus().getRadians(),
-                new Rotation2d(Math.toRadians(angleDegrees)).getRadians()),
-                swerveDrive.getPose().getRotation()));
+                    controller.headingCalculate(swerveDrive.getOdometryHeading().unaryMinus().getRadians(),
+                            new Rotation2d(Math.toRadians(angleDegrees)).getRadians()),
+                    swerveDrive.getPose().getRotation()));
             SmartDashboard.putNumber("Odom Heading (rad)", swerveDrive.getOdometryHeading().unaryMinus().getRadians());
             SmartDashboard.putNumber("Target Heading (rad)", Math.toRadians(angleDegrees));
             SmartDashboard.putNumber("Error (rad)", Math.abs(new Rotation2d(Math.toRadians(angleDegrees))
-                .minus(swerveDrive.getOdometryHeading().unaryMinus()).getRadians()));
+                    .minus(swerveDrive.getOdometryHeading().unaryMinus()).getRadians()));
         }).until(() -> (Math.abs(new Rotation2d(Math.toRadians(angleDegrees))
-            .minus(swerveDrive.getOdometryHeading().unaryMinus()).getDegrees()) < toleranceDegrees)
-            && swerveDrive.getRobotVelocity().omegaRadiansPerSecond < 0.1);
+                .minus(swerveDrive.getOdometryHeading().unaryMinus()).getDegrees()) < toleranceDegrees)
+                && swerveDrive.getRobotVelocity().omegaRadiansPerSecond < 0.1);
     }
 
     public void strafe(double strafePower, double speedMultiplier) {
-        swerveDrive.drive(new Translation2d(0, strafePower * Math.abs(speedMultiplier) * swerveDrive.getMaximumChassisVelocity()),
-            0, false, false);
+        swerveDrive.drive(
+                new Translation2d(0, strafePower * Math.abs(speedMultiplier) * swerveDrive.getMaximumChassisVelocity()),
+                0, false, false);
     }
 }
