@@ -6,11 +6,6 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Meter;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.sim.TalonFXSimState;
-import com.ctre.phoenix6.configs.*;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
