@@ -92,11 +92,7 @@ public class SwerveSubsystem extends SubsystemBase {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        for(SwerveModule m : swerveDrive.getModules()) {
-            TalonFX steeringMotor = (TalonFX)m.getAngleMotor().getMotor(); 
-            TalonFX driveMotor = (TalonFX)m.getDriveMotor().getMotor(); 
-            
-        }
+        
         if (Robot.isSimulation()) {
             // Set these values to false so that simulation works
             swerveDrive.setHeadingCorrection(false);
