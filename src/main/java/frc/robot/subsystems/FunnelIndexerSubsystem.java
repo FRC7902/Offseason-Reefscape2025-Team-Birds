@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.Constants;
+
 public class FunnelIndexerSubsystem extends SubsystemBase {
   private final TalonFX funnelMotor = new TalonFX(Constants.FunnelIndexerConstants.kFunnelMotorID);
   private final DigitalInput firstBeamBreak = new DigitalInput(Constants.FunnelIndexerConstants.kFirstBeamBreakPort);
