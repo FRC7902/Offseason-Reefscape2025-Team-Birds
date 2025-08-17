@@ -21,6 +21,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.SwerveConstants;
@@ -39,7 +40,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     /** Creates a new SwerveSubsystem. */
-    public SwerveSubsystem(File directory) {
+    public SwerveSubsystem(CommandXboxController m_driverController, File directory) {
 
         // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary
         // objects being created.
@@ -49,8 +50,8 @@ public class SwerveSubsystem extends SubsystemBase {
             swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveConstants.MAX_SPEED,
                     new Pose2d(new Translation2d(Meter.of(1),
                             Meter.of(4)), Rotation2d.fromDegrees(0)));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception error) {
+            throw new RuntimeException(error);
         }
         if (Robot.isSimulation()) {
             // Set these values to false so that simulation works
@@ -83,6 +84,7 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Gyro angle rotation (rad)", swerveDrive.getGyro().getRotation3d().getAngle());
 
         SmartDashboard.putString("Robo Pose2D", swerveDrive.getPose().toString());
+
     }
 
     @Override
