@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FunnelIndexerSubsystem;
-import frc.robot.Constants;
+import frc.robot.Constants.FunnelIndexerConstants;
 
 
 public class FunnelIntakeCommand extends Command {
@@ -16,17 +16,17 @@ public class FunnelIntakeCommand extends Command {
   
     @Override
     public void execute() {
-      boolean firstBroken = m_funnel.isFirstBeamBroken();
-      boolean secondBroken = m_funnel.isSecondBeamBroken();
+      boolean shallowBroken = m_funnel.isShallowBeamBroken();
+      boolean deepBroken = m_funnel.isDeepBeamBroken();
   
-      if (!firstBroken && !secondBroken) {
-        m_funnel.setMotorSpeed(Constants.FunnelIndexerConstants.m_fullSpeed);
-      } else if (firstBroken && !secondBroken) {
-        m_funnel.setMotorSpeed(Constants.FunnelIndexerConstants.m_halfSpeed);
-      } else if (!firstBroken && secondBroken) {
-        m_funnel.setMotorSpeed(Constants.FunnelIndexerConstants.m_reverseSpeed);
+      if (!shallowBroken && !deepBroken) {
+        m_funnel.setMotorSpeed(FunnelIndexerConstants.m_fullSpeed);
+      } else if (shallowBroken && !deepBroken) {
+        m_funnel.setMotorSpeed(FunnelIndexerConstants.m_halfSpeed);
+      } else if (!shallowBroken && deepBroken) {
+        m_funnel.setMotorSpeed(FunnelIndexerConstants.m_stopSpeed);
       } else {
-        m_funnel.setMotorSpeed(Constants.FunnelIndexerConstants.m_stopSpeed);
+        m_funnel.setMotorSpeed(FunnelIndexerConstants.m_reverseSpeed);
       }
     }
   

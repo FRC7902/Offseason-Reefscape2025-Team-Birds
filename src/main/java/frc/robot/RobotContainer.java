@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.subsystems.FunnelIndexerSubsystem;
 import frc.robot.commands.FunnelIntakeCommand; 
+import frc.robot.commands.FunnelOuttakeCommand; 
 
 
 /**
@@ -38,6 +39,9 @@ public class RobotContainer {
 
     m_funnelIndexerSubsystem.setDefaultCommand(
         new FunnelIntakeCommand(m_funnelIndexerSubsystem));
+
+        m_funnelIndexerSubsystem.setDefaultCommand(
+        new FunnelOuttakeCommand(m_funnelIndexerSubsystem));
   }
 
   /**

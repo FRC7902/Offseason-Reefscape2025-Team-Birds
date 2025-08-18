@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants;
+import frc.robot.Constants.FunnelIndexerConstants;;
 
 public class FunnelIndexerSubsystem extends SubsystemBase {
-  private final TalonFX funnelMotor = new TalonFX(Constants.FunnelIndexerConstants.kFunnelMotorID);
-  private final DigitalInput firstBeamBreak = new DigitalInput(Constants.FunnelIndexerConstants.kFirstBeamBreakPort);
-  private final DigitalInput secondBeamBreak = new DigitalInput(Constants.FunnelIndexerConstants.kSecondBeamBreakPort);
+  private final TalonFX funnelMotor = new TalonFX(FunnelIndexerConstants.kFunnelMotorID);
+  private final DigitalInput shallowBeamBreak = new DigitalInput(FunnelIndexerConstants.kShallowBeamBreakPort); //Shallow Beam Break
+  private final DigitalInput deepBeamBreak = new DigitalInput(FunnelIndexerConstants.kDeepBeamBreakPort); // Deep Beam Break
 
   public FunnelIndexerSubsystem() {}
 
@@ -22,16 +22,16 @@ public class FunnelIndexerSubsystem extends SubsystemBase {
     funnelMotor.set(speed);
   }
 
-  public boolean isFirstBeamBroken() {
-    return !firstBeamBreak.get(); 
+  public boolean isShallowBeamBroken() {
+    return !shallowBeamBreak.get(); 
   }
 
-  public boolean isSecondBeamBroken() {
-    return !secondBeamBreak.get(); 
+  public boolean isDeepBeamBroken() {
+    return !deepBeamBreak.get(); 
   }
 
   public boolean isCoralPresent() {
-    return isFirstBeamBroken() || isSecondBeamBroken();
+    return isShallowBeamBroken() || isDeepBeamBroken();
   }
 
   public void stopFunnel() {
@@ -40,7 +40,7 @@ public class FunnelIndexerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("First Beam Broken", isFirstBeamBroken());
-    SmartDashboard.putBoolean("Second Beam Broken", isSecondBeamBroken());
+    SmartDashboard.putBoolean("First Beam Broken", isShallowBeamBroken());
+    SmartDashboard.putBoolean("Second Beam Broken", isDeepBeamBroken());
   }
 }
