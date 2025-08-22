@@ -46,6 +46,7 @@ public class SwerveSubsystem extends SubsystemBase {
         // objects being created.
         // High Telemetry only feeds readable data related to swerve drive
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+
         try {
             swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveConstants.MAX_SPEED,
                     new Pose2d(new Translation2d(Meter.of(1),
@@ -84,7 +85,6 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Gyro angle rotation (rad)", swerveDrive.getGyro().getRotation3d().getAngle());
 
         SmartDashboard.putString("Robo Pose2D", swerveDrive.getPose().toString());
-
     }
 
     @Override
