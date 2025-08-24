@@ -27,4 +27,24 @@ public final class Constants {
   public static class SwerveConstants {
     public static final double MAX_SPEED = Units.feetToMeters(15);
   }
+
+  public static class FunnelIndexerConstants {
+
+  }
+
+  public static class AlgaeCoralIndexerConstants {
+
+  }
+
+  public static class ElevatorArmConstants {
+
+  }
+
+  public static class VisionConstants {
+
+  }
+
+  public static class PathPlannerConstants {
+
+  }
 }
