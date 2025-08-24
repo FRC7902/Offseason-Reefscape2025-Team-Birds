@@ -10,6 +10,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.subsystems.vision.CameraProperties;
 
 /**
@@ -64,10 +65,48 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    // Contains the stored position of each April Tag on the field. This varies
-    // between seasons.
-    public static final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout
-        .loadField(AprilTagFields.k2025ReefscapeWelded);
+    // Camera Offset
+
+    // y distance = 299.8 mm (right left)
+    // x dist = 269.87 mm (forward back)
+    // ground = 272.94 mm
+
+    public static final int[] acceptedTagIDs = new int[] { 2, 3, 6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22 };
+
+    public static final double kGroundToCamera = 0.27294; // meters
+    public static final double kFowardToCamera = 0.26987; // meters
+    public static final double kSidewaysToCamera = 0.2998; // meters
+    public static final double kCameraRotation = 25.3; // degrees
+    public static final String kCameraName = "limelight";
+
+    public static double kLocalizationDisLim = 2;
+
+    public static double kStdDevs = 0.800000;
+
+    // //April Tag Offset
+    // public static final double kGroundToAprilTagDistance = 0.171; //in meters
+    // public static final double kAprilTagAreaLimit = 4.5;
+    public static final double kAprilTagOffset = 0;
+
+    // Reef Offset
+    public static double leftReefToAprilTagOffset = -0.165000;
+    public static double rightReefToAprilTagOffset = 0.210000;
+
+    // PID Y Controller Constants
+    public static final TrapezoidProfile.Constraints yConstraints = new TrapezoidProfile.Constraints(60, 40);
+    public static double yControllerTolerance = 0;
+    public static double kPY = 0.07;
+    public static double kIY = 0;
+    public static double kDY = 0;
+
+    public static double kPY2 = 6.0;
+    public static double kIY2 = 0;
+    public static double kDY2 = 0.5;
+
+    public static int kSecondPIDControllerStartingPoint = 13; // to change
+
+    // Contains the stored position of each April Tag on the field. This varies between seasons.
+    public static final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
   }
 
 }
