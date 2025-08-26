@@ -26,100 +26,98 @@ import swervelib.SwerveInputStream;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  // TODO: Initialize your DriveSubsystem here...
+    // The robot's subsystems and commands are defined here...
+    // TODO: Initialize your DriveSubsystem here...
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  public final static CommandXboxController m_driverController = new CommandXboxController(
-      OperatorConstants.kDriverControllerPort);
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+    public final static CommandXboxController m_driverController = new CommandXboxController(
+            OperatorConstants.kDriverControllerPort);
 
-  public final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(
-      m_driverController,
-      new File(Filesystem.getDeployDirectory(), "swerve"));
+    public final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(
+            m_driverController,
+            new File(Filesystem.getDeployDirectory(), "swerve"));
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-    m_swerveSubsystem.setDefaultCommand(
-        !RobotBase.isSimulation() ? driveFieldOrientedAngularVelocity : driveFieldOrientedDirectAngleSim);
-  }
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Configure the trigger bindings
+        configureBindings();
+    }
 
-  public SwerveInputStream driveAngularVelocity = SwerveInputStream
-      .of(m_swerveSubsystem.getSwerveDrive(), () -> m_driverController.getLeftY() * -1,
-          () -> m_driverController.getLeftX() * -1)
-      .withControllerRotationAxis(() -> m_driverController.getRightX() * -1)
-      .deadband(OperatorConstants.DEADBAND).scaleTranslation(0.8)
-      .allianceRelativeControl(true);
+    public SwerveInputStream driveAngularVelocity = SwerveInputStream
+            .of(m_swerveSubsystem.getSwerveDrive(), () -> m_driverController.getLeftY() * -1,
+                    () -> m_driverController.getLeftX() * -1)
+            .withControllerRotationAxis(() -> m_driverController.getRightX() * -1)
+            .deadband(OperatorConstants.DEADBAND).scaleTranslation(0.8)
+            .allianceRelativeControl(true);
 
-  public SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-      .allianceRelativeControl(false);
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy()
-      .withControllerHeadingAxis(m_driverController::getRightX, m_driverController::getRightY)
-      .headingWhile(true);
+    public SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+            .allianceRelativeControl(false);
+    SwerveInputStream driveDirectAngle = driveAngularVelocity.copy()
+            .withControllerHeadingAxis(m_driverController::getRightX, m_driverController::getRightY)
+            .headingWhile(true);
 
-  Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
-  Command driveRobotOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveRobotOriented);
+    Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
+    Command driveRobotOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveRobotOriented);
 
-  SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
-      () -> -m_driverController.getLeftY(),
-      () -> -m_driverController.getLeftX())
-      .withControllerRotationAxis(() -> m_driverController.getRawAxis(
-          2))
-      .deadband(OperatorConstants.DEADBAND)
-      .scaleTranslation(0.8)
-      .allianceRelativeControl(true);
-  // Derive the heading axis with math!
-  SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
-      .withControllerHeadingAxis(() -> Math.sin(
-          m_driverController.getRawAxis(
-              2) *
-              Math.PI)
-          *
-          (Math.PI *
-              2),
-          () -> Math.cos(
-              m_driverController.getRawAxis(
-                  2) *
-                  Math.PI)
-              *
-              (Math.PI *
-                  2))
-      .headingWhile(true)
-      .translationHeadingOffset(true)
-      .translationHeadingOffset(Rotation2d.fromDegrees(
-          0));
-  Command driveFieldOrientedDirectAngleSim = m_swerveSubsystem.driveFieldOriented(driveDirectAngleSim);
+    SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX())
+            .withControllerRotationAxis(() -> m_driverController.getRawAxis(
+                    2))
+            .deadband(OperatorConstants.DEADBAND)
+            .scaleTranslation(0.8)
+            .allianceRelativeControl(true);
+    // Derive the heading axis with math!
+    SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
+            .withControllerHeadingAxis(() -> Math.sin(
+                    m_driverController.getRawAxis(
+                            2) *
+                            Math.PI)
+                    *
+                    (Math.PI *
+                            2),
+                    () -> Math.cos(
+                            m_driverController.getRawAxis(
+                                    2) *
+                                    Math.PI)
+                            *
+                            (Math.PI *
+                                    2))
+            .headingWhile(true)
+            .translationHeadingOffset(true)
+            .translationHeadingOffset(Rotation2d.fromDegrees(
+                    0));
+    Command driveFieldOrientedDirectAngleSim = m_swerveSubsystem.driveFieldOriented(driveDirectAngleSim);
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be
-   * created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-   * an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
-   * CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or
-   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem,
-    // m_driverController));
-    m_swerveSubsystem.setDefaultCommand(
-        Robot.isSimulation() ? driveFieldOrientedAngularVelocity : driveRobotOrientedAngularVelocity);
-  }
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be
+     * created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+     * an arbitrary
+     * predicate, or via the named factories in {@link
+     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+     * {@link
+     * CommandXboxController
+     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+     * PS4} controllers or
+     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * joysticks}.
+     */
+    private void configureBindings() {
+        // m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem,
+        // m_driverController));
+        m_swerveSubsystem.setDefaultCommand(
+                !RobotBase.isSimulation() ? driveFieldOrientedAngularVelocity : driveFieldOrientedDirectAngleSim);
+    }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return null;
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return null;
+    }
 }
