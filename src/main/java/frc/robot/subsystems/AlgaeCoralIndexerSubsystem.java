@@ -47,7 +47,7 @@ public class AlgaeCoralIndexerSubsystem extends SubsystemBase {
   public void algaeAndCoralOrNo() {
     if (hasCoral()) {
       if (hasAlgae()) {
-        voltagecontrol(AlgaeCoralIndexerConstants.algaeRemovalVoltage);
+        voltagecontrol(AlgaeCoralIndexerConstants.algaenoVoltage);
       } else {
         voltagecontrol(0);
       }
