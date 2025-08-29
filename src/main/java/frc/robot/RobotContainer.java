@@ -8,7 +8,6 @@ import java.io.File;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -61,9 +60,7 @@ public class RobotContainer {
     Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
     Command driveRobotOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveRobotOriented);
 
-    SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
-            () -> -m_driverController.getLeftY(),
-            () -> -m_driverController.getLeftX())
+    SwerveInputStream driveAngularVelocitySim = driveAngularVelocity.copy()
             .withControllerRotationAxis(() -> m_driverController.getRawAxis(
                     2))
             .deadband(OperatorConstants.DEADBAND)
@@ -72,19 +69,9 @@ public class RobotContainer {
     // Derive the heading axis with math!
     SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
             .withControllerHeadingAxis(() -> Math.sin(
-                    m_driverController.getRawAxis(
-                            2) *
-                            Math.PI)
-                    *
-                    (Math.PI *
-                            2),
-                    () -> Math.cos(
-                            m_driverController.getRawAxis(
-                                    2) *
-                                    Math.PI)
-                            *
-                            (Math.PI *
-                                    2))
+                    m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2),
+                    () -> Math.cos(m_driverController.getRawAxis(2) * Math.PI)
+                            * (Math.PI * 2))
             .headingWhile(true)
             .translationHeadingOffset(true)
             .translationHeadingOffset(Rotation2d.fromDegrees(
@@ -109,7 +96,7 @@ public class RobotContainer {
         // m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem,
         // m_driverController));
         m_swerveSubsystem.setDefaultCommand(
-                !RobotBase.isSimulation() ? driveFieldOrientedAngularVelocity : driveFieldOrientedDirectAngleSim);
+                Robot.isSimulation() ? driveFieldOrientedDirectAngleSim : driveRobotOrientedAngularVelocity);
     }
 
     /**
