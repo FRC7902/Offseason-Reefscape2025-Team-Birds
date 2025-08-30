@@ -64,6 +64,54 @@
     },
     {
       "anchor": {
+        "x": 5.044676839111068,
+        "y": 2.304118286317316
+      },
+      "prevControl": {
+        "x": 5.361779488762103,
+        "y": 2.380993990295318
+      },
+      "nextControl": {
+        "x": 4.727574189460032,
+        "y": 2.227242582339314
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.7067417796739885,
+        "y": 1.8839212599607502
+      },
+      "prevControl": {
+        "x": 4.6928119590435635,
+        "y": 2.1708954771170355
+      },
+      "nextControl": {
+        "x": 2.7206716003044136,
+        "y": 1.596947042804465
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.3688067202369094,
+        "y": 1.4637242336041847
+      },
+      "prevControl": {
+        "x": 2.6026096409081196,
+        "y": 1.5522465148988491
+      },
+      "nextControl": {
+        "x": 2.135003799565699,
+        "y": 1.3752019523095202
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
         "x": 1.6385427468442686,
         "y": 1.1006986876459053
       },
@@ -138,6 +186,22 @@
       "nextControl": {
         "x": 5.258356753751751,
         "y": 2.4501062423904614
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.49481938632504,
+        "y": 1.8715819568252914
+      },
+      "prevControl": {
+        "x": 4.3765880700383955,
+        "y": 2.1608440996078766
+      },
+      "nextControl": {
+        "x": 2.6130507026116847,
+        "y": 1.582319814042706
       },
       "isLocked": false,
       "linkedName": null
@@ -256,6 +320,38 @@
     },
     {
       "anchor": {
+        "x": 1.6385427468442686,
+        "y": 1.1006986876459053
+      },
+      "prevControl": {
+        "x": 1.4498234052042378,
+        "y": 0.9367321968895519
+      },
+      "nextControl": {
+        "x": 1.8272620884842994,
+        "y": 1.2646651784022587
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.407323711945388,
+        "y": 1.6905799183000605
+      },
+      "prevControl": {
+        "x": 1.8474855653674171,
+        "y": 1.2091708095822356
+      },
+      "nextControl": {
+        "x": 2.9671618585233586,
+        "y": 2.1719890270178857
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
         "x": 3.578545522839683,
         "y": 2.7703210257681485
       },
@@ -290,39 +386,39 @@
       "rotationDegrees": 122.17361658954948
     },
     {
-      "waypointRelativePos": 3.5314144736842104,
+      "waypointRelativePos": 5.1,
       "rotationDegrees": 120.35699999999999
     },
     {
-      "waypointRelativePos": 5.038486842105272,
+      "waypointRelativePos": 8.038486842105272,
       "rotationDegrees": -125.71500000000002
     },
     {
-      "waypointRelativePos": 5.54597039473684,
+      "waypointRelativePos": 8.545970394736841,
       "rotationDegrees": 120.35699999999999
     },
     {
-      "waypointRelativePos": 6.995888157894738,
+      "waypointRelativePos": 9.995888157894738,
       "rotationDegrees": 120.35699999999999
     },
     {
-      "waypointRelativePos": 8.507689144736831,
+      "waypointRelativePos": 12.0,
       "rotationDegrees": 120.35699999999999
     },
     {
-      "waypointRelativePos": 9.403258634868376,
+      "waypointRelativePos": 13.403258634868376,
       "rotationDegrees": -125.71500000000002
     },
     {
-      "waypointRelativePos": 12.27417763157895,
+      "waypointRelativePos": 16.27417763157895,
       "rotationDegrees": 58.650000000000006
     },
     {
-      "waypointRelativePos": 13.547224506579106,
-      "rotationDegrees": 56.658310614788185
+      "waypointRelativePos": 17.547224506579106,
+      "rotationDegrees": 56.65831061478819
     },
     {
-      "waypointRelativePos": 15.1,
+      "waypointRelativePos": 19.4,
       "rotationDegrees": -125.71500000000002
     }
   ],
