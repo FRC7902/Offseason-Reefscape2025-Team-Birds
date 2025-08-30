@@ -6,7 +6,7 @@ import frc.robot.RobotContainer;
 
 public class AlgaeCoralControlCommand extends Command {
     public AlgaeCoralControlCommand() {
-        addRequirements(RobotContainer.m_AlgaeCoralIndexerSubsystem);
+        addRequirements(RobotContainer.m_algaeCoralIndexerSubsystem);
     }
 
     @Override
@@ -15,15 +15,15 @@ public class AlgaeCoralControlCommand extends Command {
 
     @Override
     public void execute() {
-        if (RobotContainer.m_AlgaeCoralIndexerSubsystem.hasCoral()) {
-            if (RobotContainer.m_AlgaeCoralIndexerSubsystem.hasAlgae()) {
-                RobotContainer.m_AlgaeCoralIndexerSubsystem
+        if (RobotContainer.m_algaeCoralIndexerSubsystem.hasCoral()) {
+            if (RobotContainer.m_algaeCoralIndexerSubsystem.hasAlgae()) {
+                RobotContainer.m_algaeCoralIndexerSubsystem
                         .voltagecontrol(AlgaeCoralIndexerConstants.algaeRemovalVoltage);
             } else {
-                RobotContainer.m_AlgaeCoralIndexerSubsystem.voltagecontrol(0);
+                RobotContainer.m_algaeCoralIndexerSubsystem.voltagecontrol(0);
             }
         } else {
-            RobotContainer.m_AlgaeCoralIndexerSubsystem.voltagecontrol(AlgaeCoralIndexerConstants.coralReleaseVoltage);
+            RobotContainer.m_algaeCoralIndexerSubsystem.voltagecontrol(AlgaeCoralIndexerConstants.coralReleaseVoltage);
         }
     }
 
