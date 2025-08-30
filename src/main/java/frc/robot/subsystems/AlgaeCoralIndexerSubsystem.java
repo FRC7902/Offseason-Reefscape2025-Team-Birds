@@ -4,61 +4,50 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AlgaeCoralIndexerConstants;
 import frc.robot.Constants.AlgaeCoralIndexerConstants;
 
 public class AlgaeCoralIndexerSubsystem extends SubsystemBase {
   /** Creates a new AlgaeCoralIndexerSubsystem. */
   private final TalonFX m_motor;
-  private final DigitalInput m_kewlbeambreak ;
-  private final DigitalInput m_kewlbeambreak2 ;
+  private final DigitalInput m_algaebeambreak ;
+  private final DigitalInput m_coralbeambreak ;
   /*instsmth motors and beam breaks */
   public AlgaeCoralIndexerSubsystem() {
-    m_motor = new TalonFX(AlgaeCoralIndexerConstants.kitkat) ; 
+    m_motor = new TalonFX(AlgaeCoralIndexerConstants.ALGAE_CORAL_MOTOR_ID) ; 
     /*kitkats r yummy */
-    m_kewlbeambreak = new DigitalInput(AlgaeCoralIndexerConstants.canoe) ;
-    /*idk what to wrie here  */
-    m_kewlbeambreak2 = new DigitalInput(AlgaeCoralIndexerConstants.spiderman) ;
-    /*spiderman is secretly James Bond */
+    m_algaebeambreak = new DigitalInput(AlgaeCoralIndexerConstants.CORAL_BEAM_BREAK_ID) ;
+    /*idk what to writ here  */
+    m_coralbeambreak = new DigitalInput(AlgaeCoralIndexerConstants.ALGAE_BEAM_BREAK_ID) ;
+    /*algae_beam_break_id is secretly James Bond */
     
   }
 
 
-  private boolean hasAlgae (){
-    return !m_kewlbeambreak.get();
+  public boolean hasAlgae (){
+    return !m_algaebeambreak.get();
   }
-  private boolean hasCoral () {
-    return !m_kewlbeambreak2.get() ;
+  public boolean hasCoral () {
+    return !m_coralbeambreak.get() ;
   }
   /*check if bakon has not stolen coral */
 /*hi */
-  private void voltagecontrol(double voltorb){
+  public void voltagecontrol(double voltorb){
   m_motor.setVoltage(voltorb);
   
-
+/*... */
 
   }
-  public double getIndexerVoltage() {
+  public Voltage getIndexerVoltage() {
     return m_motor.getMotorVoltage().getValue();
 }
-  public void algaeAndCoralOrNo() {
-    if (hasCoral()) {
-      if (hasAlgae()) {
-        voltagecontrol(AlgaeCoralIndexerConstants.algaenoVoltage);
-      } else {
-        voltagecontrol(0);
-      }
-    } else {
-      voltagecontrol(AlgaeCoralIndexerConstants.coralReleaseVoltage); }
-    }
+
 
   
     @Override
   public void periodic() {
-    algaeAndCoralOrNo();
+
     // This method will be called once per scheduler run
   }
 }
