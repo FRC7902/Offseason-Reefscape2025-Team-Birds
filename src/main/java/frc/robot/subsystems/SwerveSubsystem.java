@@ -21,7 +21,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.SwerveConstants;
@@ -40,7 +39,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     /** Creates a new SwerveSubsystem. */
-    public SwerveSubsystem(CommandXboxController m_driverController, File directory) {
+    public SwerveSubsystem(File directory) {
 
         // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary
         // objects being created.

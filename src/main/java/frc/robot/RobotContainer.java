@@ -33,7 +33,6 @@ public class RobotContainer {
             OperatorConstants.kDriverControllerPort);
 
     public final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(
-            m_driverController,
             new File(Filesystem.getDeployDirectory(), "swerve"));
 
     /**
@@ -97,6 +96,7 @@ public class RobotContainer {
         // m_driverController));
         m_swerveSubsystem.setDefaultCommand(
                 Robot.isSimulation() ? driveFieldOrientedDirectAngleSim : driveRobotOrientedAngularVelocity);
+        m_driverController.back().whileTrue(m_swerveSubsystem.centerModulesCommand());
     }
 
     /**
