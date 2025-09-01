@@ -75,7 +75,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         swerveDrive.setChassisDiscretization(false, true, 0.03);
         swerveDrive.swerveController.addSlewRateLimiters(null, null, null);
-        swerveDrive.swerveController.setMaximumChassisAngularVelocity(20);
+        swerveDrive.swerveController.setMaximumChassisAngularVelocity(5);
     }
 
     @Override

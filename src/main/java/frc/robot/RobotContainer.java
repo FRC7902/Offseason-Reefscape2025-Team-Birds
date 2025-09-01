@@ -57,15 +57,9 @@ public class RobotContainer {
             .withControllerHeadingAxis(m_driverController::getRightX, m_driverController::getRightY)
             .headingWhile(true);
 
-    Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
-    Command driveRobotOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveRobotOriented);
-
     SwerveInputStream driveAngularVelocitySim = driveAngularVelocity.copy()
             .withControllerRotationAxis(() -> m_driverController.getRawAxis(
-                    2))
-            .deadband(OperatorConstants.DEADBAND)
-            .scaleTranslation(0.8)
-            .allianceRelativeControl(true);
+                    2));
     // Derive the heading axis with math!
     SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
             .withControllerHeadingAxis(() -> Math.sin(
@@ -76,7 +70,6 @@ public class RobotContainer {
             .translationHeadingOffset(true)
             .translationHeadingOffset(Rotation2d.fromDegrees(
                     0));
-    Command driveFieldOrientedDirectAngleSim = m_swerveSubsystem.driveFieldOriented(driveDirectAngleSim);
 
     /**
      * Use this method to define your trigger->command mappings. Triggers can be
@@ -95,8 +88,15 @@ public class RobotContainer {
     private void configureBindings() {
         // m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem,
         // m_driverController));
+        Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
+        Command driveRobotOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveRobotOriented);
+        Command driveFieldOrientedAngularVelocitySim = m_swerveSubsystem.driveFieldOriented(driveAngularVelocitySim);
+        Command driveFieldDirectAngle = m_swerveSubsystem.driveFieldOriented(driveDirectAngle);
+        Command driveFieldDirectAngleSim = m_swerveSubsystem.driveFieldOriented(driveDirectAngleSim);
+
+        // Switch driveFieldOrientedAngularVelocity with driveRobotOrientedAngularVelocity in real matches
         m_swerveSubsystem.setDefaultCommand(
-                Robot.isSimulation() ? driveFieldOrientedDirectAngleSim : driveRobotOrientedAngularVelocity);
+                Robot.isSimulation() ? driveFieldOrientedAngularVelocitySim : driveRobotOrientedAngularVelocity);
         m_driverController.start().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyroWithAlliance)));
         m_driverController.back().whileTrue(m_swerveSubsystem.centerModulesCommand());
     }
