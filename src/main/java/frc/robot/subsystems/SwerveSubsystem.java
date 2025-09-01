@@ -89,9 +89,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
         SmartDashboard.putString("Robo Pose2D", swerveDrive.getPose().toString());
         swerveDrive.updateOdometry();
-        LimelightHelpers.SetRobotOrientation(VisionConstants.kCameraName,
-                swerveDrive.getPose().getRotation().getDegrees(), 0.0, 0.0, 0.0, 0.0, 0.0);
-        RobotContainer.m_cameraSubsystem.updateOdometryWithMegaTag2();
     }
 
     @Override

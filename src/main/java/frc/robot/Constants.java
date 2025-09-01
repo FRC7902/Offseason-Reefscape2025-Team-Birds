@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.subsystems.vision.CameraProperties;
 
 /**
@@ -41,22 +42,27 @@ public final class Constants {
 
   public static class PhotonConstants {
     public static final String leftCamName = "left";
-    public static final Transform3d leftCamToRobotTsf = new Transform3d(0.207, 0.150, 0.567,
-        new Rotation3d(Math.toRadians(0), Math.toRadians(30), Math.toRadians(-4.333)));
-    public static final CameraProperties leftCamProp = new CameraProperties(leftCamName, leftCamToRobotTsf, 640, 480,
-        Rotation2d.fromDegrees(100), 30, 0.25, 0.08);
+    public static final Transform3d leftCamToRobotTsf = 
+      new Transform3d(0.207, 0.150, 0.567, new Rotation3d(Math.toRadians(0), Math.toRadians(30), Math.toRadians(-4.333)));
+    public static final CameraProperties leftCamProp = 
+      new CameraProperties(leftCamName, leftCamToRobotTsf, 640, 480, Rotation2d.fromDegrees(100), 30, 0.25, 0.08);
 
     public static final String rightCamName = "right";
-    public static final Transform3d rightCamToRobotTsf = new Transform3d(0.207, -0.150, 0.567,
-        new Rotation3d(Math.toRadians(0), Math.toRadians(30), Math.toRadians(4.333)));
-    public static final CameraProperties rightCamProp = new CameraProperties(rightCamName, rightCamToRobotTsf, 640,
-        480, Rotation2d.fromDegrees(100), 30, 0.25, 0.08);
+    public static final Transform3d rightCamToRobotTsf = 
+      new Transform3d(0.207, -0.150, 0.567, new Rotation3d(Math.toRadians(0), Math.toRadians(30), Math.toRadians(4.333)));
+    public static final CameraProperties rightCamProp = 
+      new CameraProperties(rightCamName, rightCamToRobotTsf, 640, 480, Rotation2d.fromDegrees(100), 30, 0.25, 0.08);
 
     public static final String middleCamName = "middle";
-    public static final Transform3d middleCamToRobotTsf = new Transform3d(0, 0, 0.35,
-        new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0)));
-    public static final CameraProperties middleCamProp = new CameraProperties(middleCamName, middleCamToRobotTsf, 640,
-        480, Rotation2d.fromDegrees(100), 30, 0.25, 0.08);
+    public static final Transform3d middleCamToRobotTsf = 
+      new Transform3d(0, 0, 0.35, new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0)));
+    public static final CameraProperties middleCamProp =
+      new CameraProperties(middleCamName, middleCamToRobotTsf, 640, 480, Rotation2d.fromDegrees(100), 30, 0.25, 0.08);
+
+
+    // Simulation constants
+    public static final boolean enableVisionFieldSim = true;
+    public static final boolean enableCameraPosChange = false;
   }
 
   public static class LimelightConstants {
@@ -71,42 +77,72 @@ public final class Constants {
     // x dist = 269.87 mm (forward back)
     // ground = 272.94 mm
 
-    public static final int[] acceptedTagIDs = new int[] { 2, 3, 6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22 };
+    // public static final int[] acceptedTagIDs = new int[] { 2, 3, 6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22 };
 
-    public static final double kGroundToCamera = 0.27294; // meters
-    public static final double kFowardToCamera = 0.26987; // meters
-    public static final double kSidewaysToCamera = 0.2998; // meters
-    public static final double kCameraRotation = 25.3; // degrees
-    public static final String kCameraName = "limelight";
+    // public static final double kGroundToCamera = 0.27294; // meters
+    // public static final double kFowardToCamera = 0.26987; // meters
+    // public static final double kSidewaysToCamera = 0.2998; // meters
+    // public static final double kCameraRotation = 25.3; // degrees
+    // public static final String kCameraName = "limelight";
 
-    public static double kLocalizationDisLim = 2;
+    // public static double kLocalizationDisLim = 2;
 
-    public static double kStdDevs = 0.800000;
+    // public static double kStdDevs = 0.800000;
 
-    // //April Tag Offset
-    // public static final double kGroundToAprilTagDistance = 0.171; //in meters
-    // public static final double kAprilTagAreaLimit = 4.5;
-    public static final double kAprilTagOffset = 0;
+    // // //April Tag Offset
+    // // public static final double kGroundToAprilTagDistance = 0.171; //in meters
+    // // public static final double kAprilTagAreaLimit = 4.5;
+    // public static final double kAprilTagOffset = 0;
 
-    // Reef Offset
-    public static double leftReefToAprilTagOffset = -0.165000;
-    public static double rightReefToAprilTagOffset = 0.210000;
+    // // Reef Offset
+    // public static double leftReefToAprilTagOffset = -0.165000;
+    // public static double rightReefToAprilTagOffset = 0.210000;
 
-    // PID Y Controller Constants
-    public static final TrapezoidProfile.Constraints yConstraints = new TrapezoidProfile.Constraints(60, 40);
-    public static double yControllerTolerance = 0;
-    public static double kPY = 0.07;
-    public static double kIY = 0;
-    public static double kDY = 0;
+    // // PID Y Controller Constants
+    // public static final TrapezoidProfile.Constraints yConstraints = new TrapezoidProfile.Constraints(60, 40);
+    // public static double yControllerTolerance = 0;
+    // public static double kPY = 0.07;
+    // public static double kIY = 0;
+    // public static double kDY = 0;
 
-    public static double kPY2 = 6.0;
-    public static double kIY2 = 0;
-    public static double kDY2 = 0.5;
+    // public static double kPY2 = 6.0;
+    // public static double kIY2 = 0;
+    // public static double kDY2 = 0.5;
 
-    public static int kSecondPIDControllerStartingPoint = 13; // to change
+    // public static int kSecondPIDControllerStartingPoint = 13; // to change
 
-    // Contains the stored position of each April Tag on the field. This varies between seasons.
+    // // Contains the stored position of each April Tag on the field. This varies between seasons.
+    // public static final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
     public static final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+    public static final double xOffset = 0.8;
+    public static final double aprilTagOffset = 0.1;
+
+    public static double kPXClose = 3.4;
+    public static double kIXClose = 0;
+    public static double kDXClose = 0.01;
+
+    public static double kPYClose = 5;
+    public static double kIYClose = 0;
+    public static double kDYClose = 0.2;
+
+    public static double kPXFar = 3.6;
+    public static double kIXFar = 0;
+    public static double kDXFar = 0.05;
+
+    public static double kPYFar = 5;
+    public static double kIYFar = 0;
+    public static double kDYFar = 0.2;
+
+    public static double kPTheta = 3.6;
+    public static double kITheta = 0;
+    public static double kDTheta = 0.05;
+
+    public static double kPIDDifferenceConstantX = 3;
+    public static double kPIDDifferenceConstantY = 3;
+
+    public static final Constraints kXConstraints = new Constraints(20,   20);
+    public static final Constraints kYConstraints = new Constraints(20, 20);
+    public static final Constraints kOmegaConstraints = new Constraints(20, 20);
   }
 
 }

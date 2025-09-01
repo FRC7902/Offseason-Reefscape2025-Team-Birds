@@ -2,7 +2,6 @@ package frc.robot.subsystems.vision;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -91,18 +90,11 @@ public class PhotonSubsystem extends SubsystemBase {
                 detectedTagsCount = results.getTargets().size();
 
                 switch (detectedTagsCount) {
-                    case 1: 
-                        setDetectionStatus(DetectedTags.ONE);
-                        break;
-                    case 2: 
-                        setDetectionStatus(DetectedTags.TWO);
-                        break;    
-                    default: 
-                        setDetectionStatus(DetectedTags.MULTIPLE);
-                        break;
-                }
+                    case 1 -> setDetectionStatus(DetectedTags.ONE);
+                    case 2 -> setDetectionStatus(DetectedTags.TWO);
+                    default -> setDetectionStatus(DetectedTags.MULTIPLE);
+                };
             }
-
             else {
                 setDetectionStatus(DetectedTags.NONE);
             }

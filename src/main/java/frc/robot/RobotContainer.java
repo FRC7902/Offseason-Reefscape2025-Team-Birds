@@ -23,14 +23,13 @@ import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.teleop.NullCommand;
 import frc.robot.commands.teleop.SwerveCommands.StrafeLeftCommand;
 import frc.robot.commands.teleop.SwerveCommands.StrafeRightCommand;
-import frc.robot.commands.teleop.visions.AlignToReef;
+import frc.robot.commands.teleop.visions.AutoAlign;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.vision.CameraInterface;
 import frc.robot.subsystems.vision.PhotonSim;
 import frc.robot.subsystems.vision.PhotonSubsystem;
 import frc.robot.subsystems.vision.ReefSide;
 import swervelib.SwerveInputStream;
-import frc.robot.commands.teleop.visions.AlignToReef;
+import frc.robot.commands.teleop.visions.AutoAlign;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -58,7 +57,6 @@ public class RobotContainer {
   public final PhotonSubsystem m_middleCamera = new PhotonSubsystem(PhotonConstants.middleCamProp);
 
   public PhotonSim m_cameraSim;
-  public static final CameraInterface m_cameraSubsystem = new CameraInterface(VisionConstants.kCameraName);
 
   // private final CameraInterface leftCamera = new CameraInterface("quandale",
   // 0);
@@ -114,12 +112,6 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-    m_swerveSubsystem.setDefaultCommand(
-        !RobotBase.isSimulation() ? driveFieldOrientedAngularVelocity : driveFieldOrientedDirectAngleSim);
-    new EventTrigger("autoalignleft")
-        .whileTrue(new AlignToReef(m_cameraSubsystem, ReefSide.RIGHT, m_swerveSubsystem).withTimeout(2));
-    new EventTrigger("autoalignright")
-        .whileTrue(new AlignToReef(m_cameraSubsystem, ReefSide.LEFT, m_swerveSubsystem).withTimeout(2));
   }
 
   Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
@@ -171,18 +163,16 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Swerve drive controls
-    Command driveFieldOrientedDirectAngle = m_swerveSubsystem.driveFieldOriented(driveDirectAngle);
-    Command driveFieldOrientedAnglularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
-    Command driveRobotOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveRobotOriented);
-    Command driveFieldOrientedDirectAngleKeyboard = m_swerveSubsystem
-        .driveFieldOriented(driveDirectAngleKeyboard);
-    Command driveFieldOrientedAnglularVelocityKeyboard = m_swerveSubsystem
-        .driveFieldOriented(driveAngularVelocityKeyboard);
+    m_swerveSubsystem.setDefaultCommand(driveRobotOrientedAngularVelocity);
+    Command autoAlignLeft = new SequentialCommandGroup(
+        new AutoAlign(m_swerveSubsystem, m_middleCamera, ReefSide.LEFT));
+    Command autoAlignRight = new SequentialCommandGroup(
+        new AutoAlign(m_swerveSubsystem, m_middleCamera, ReefSide.RIGHT));
+    m_driverController.leftTrigger(0.05).whileTrue(autoAlignLeft);
+    m_driverController.rightTrigger(0.05).whileTrue(autoAlignRight);
 
     // Default to field-centric swerve drive
     // m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-
-    m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     // Zero gyro
     m_driverController.start().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyro)));
@@ -192,9 +182,6 @@ public class RobotContainer {
     // CheckForAprilTag(0), new AlignToReef(this, 0)));
     // m_driverController.rightTrigger(0.05).whileTrue(new
     // SequentialCommandGroup(new CheckForAprilTag(1), new AlignToReef(this, 1)));
-
-    m_driverController.a().whileTrue(new AlignToReef(m_cameraSubsystem, ReefSide.RIGHT, m_swerveSubsystem)); // left
-    m_driverController.b().whileTrue(new AlignToReef(m_cameraSubsystem, ReefSide.LEFT, m_swerveSubsystem)); // right
 
     // m_driverController.leftTrigger(0.05).whileTrue(new StrafeLeftCommand());
     // m_driverController.rightTrigger(0.05).whileTrue(new StrafeRightCommand());
