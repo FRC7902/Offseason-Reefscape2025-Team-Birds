@@ -29,11 +29,18 @@ public final class Constants {
   }
 
   public static class FunnelIndexerConstants {
+    public static final int kFunnelMotorID = 1;
+    public static final int kShallowBeamBreakPort = 0;
+    public static final int kDeepBeamBreakPort = 1;
 
+    public static final double m_fullSpeed = 0.5;
+    public static final double m_halfSpeed = 0.25;
+    public static final double m_reverseSpeed = -0.5;
+    public static final double m_stopSpeed = 0.0;
   }
 
   public static class AlgaeCoralIndexerConstants {
-
+    
   }
 
   public static class ElevatorArmConstants {

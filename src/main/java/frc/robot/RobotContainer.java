@@ -16,6 +16,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
+import frc.robot.subsystems.FunnelIndexerSubsystem;
+import frc.robot.commands.FunnelIntakeCommand; 
+import frc.robot.commands.FunnelOuttakeCommand; 
+
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -27,6 +32,7 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final FunnelIndexerSubsystem m_funnelIndexerSubsystem = new FunnelIndexerSubsystem();
   // TODO: Initialize your DriveSubsystem here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -43,6 +49,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    m_funnelIndexerSubsystem.setDefaultCommand(
+        new FunnelIntakeCommand(m_funnelIndexerSubsystem));
+
+    m_funnelIndexerSubsystem.setDefaultCommand(
+        new FunnelOuttakeCommand(m_funnelIndexerSubsystem));
+    
     m_swerveSubsystem.setDefaultCommand(
         !RobotBase.isSimulation() ? driveFieldOrientedAngularVelocity : driveFieldOrientedDirectAngleSim);
   }

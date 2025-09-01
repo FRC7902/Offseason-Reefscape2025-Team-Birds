@@ -4,14 +4,43 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.Constants.FunnelIndexerConstants;;
+
 public class FunnelIndexerSubsystem extends SubsystemBase {
-  /** Creates a new FunnelIndexerSubsystem. */
+  private final TalonFX funnelMotor = new TalonFX(FunnelIndexerConstants.kFunnelMotorID);
+  private final DigitalInput shallowBeamBreak = new DigitalInput(FunnelIndexerConstants.kShallowBeamBreakPort); //Shallow Beam Break
+  private final DigitalInput deepBeamBreak = new DigitalInput(FunnelIndexerConstants.kDeepBeamBreakPort); // Deep Beam Break
+
   public FunnelIndexerSubsystem() {}
+
+  public void setMotorSpeed(double speed) {
+    funnelMotor.set(speed);
+  }
+
+  public boolean isShallowBeamBroken() {
+    return !shallowBeamBreak.get(); 
+  }
+
+  public boolean isDeepBeamBroken() {
+    return !deepBeamBreak.get(); 
+  }
+
+  public boolean isCoralPresent() {
+    return isShallowBeamBroken() || isDeepBeamBroken();
+  }
+
+  public void stopFunnel() {
+    funnelMotor.stopMotor();
+  }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("First Beam Broken", isShallowBeamBroken());
+    SmartDashboard.putBoolean("Second Beam Broken", isDeepBeamBroken());
   }
 }
